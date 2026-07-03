@@ -2,7 +2,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import {
   Box, Typography, Button, Tooltip, Paper, IconButton, Checkbox,
-  FormControlLabel, LinearProgress, Divider, Chip, Dialog, DialogTitle,
+  LinearProgress, Divider, Dialog, DialogTitle,
   DialogContent, DialogActions, TextField, Popper, ClickAwayListener,
   InputAdornment, List, ListItemButton, ListItemIcon, ListItemText,
   Select, MenuItem, ToggleButton, ToggleButtonGroup, Snackbar, Alert,
@@ -29,7 +29,7 @@ ModuleRegistry.registerModules([AllCommunityModule, AllEnterpriseModule]);
 /* ── Themes ── */
 const sfpDarkTheme = themeQuartz.withParams({
   backgroundColor: "#1a2332", foregroundColor: "#e8eaed",
-  headerBackgroundColor: "#141d28", headerForegroundColor: "#9aa0a6",
+  headerBackgroundColor: "#141d28", 
   oddRowBackgroundColor: "#1e2a3a", rowHoverColor: "#253347",
   selectedRowBackgroundColor: "#1e3a5f", borderColor: "#2d3748",
   accentColor: "#5c9ce6", chromeBackgroundColor: "#141d28",
@@ -37,7 +37,7 @@ const sfpDarkTheme = themeQuartz.withParams({
 });
 const sfpLightTheme = themeQuartz.withParams({
   backgroundColor: "#ffffff", foregroundColor: "#1e293b",
-  headerBackgroundColor: "#f1f5f9", headerForegroundColor: "#475569",
+  headerBackgroundColor: "#f1f5f9", 
   oddRowBackgroundColor: "#f8fafc", rowHoverColor: "#e2e8f0",
   selectedRowBackgroundColor: "#dbeafe", borderColor: "#e2e8f0",
   accentColor: "#1a73e8", chromeBackgroundColor: "#f1f5f9",
@@ -430,7 +430,7 @@ export default function SourcingPage() {
       securityDetailsGroup,
       { headerName: "Total Qty", field: "totalQty", width: 100, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "" },
       { headerName: "Total MV (QC $)", field: "totalMV", width: 130, type: "numericColumn", valueFormatter: (p) => p.value != null ? `$${p.value.toLocaleString()}` : "" },
-      { headerName: "Rem. Qty", field: "remainingQty", width: 95, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "", cellStyle: (p) => p.value > 0 ? { color: "#f59e0b", fontWeight: 600 } : {} },
+      { headerName: "Rem. Qty", field: "remainingQty", width: 95, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "", cellStyle: (p) => p.value > 0 ? { color: "#f59e0b", fontWeight: 600 } : undefined },
       { headerName: "Avg. BPS", field: "avgBps", width: 80, type: "numericColumn" },
       { headerName: "Ind. BPS", field: "indBps", width: 80, type: "numericColumn" },
       { headerName: "Total Available", field: "totalAvailable", width: 115, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "" },
