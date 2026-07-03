@@ -434,7 +434,7 @@ export default function SourcingPage() {
       { headerName: "Avg. BPS", field: "avgBps", width: 80, type: "numericColumn" },
       { headerName: "Ind. BPS", field: "indBps", width: 80, type: "numericColumn" },
       { headerName: "Total Available", field: "totalAvailable", width: 115, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "" },
-      { headerName: "Total Allocated", field: "totalAllocated", width: 115, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "", cellStyle: (p) => { const line = p.data as SourcingLine; return line && p.value === line.totalQty ? { color: "#10b981", fontWeight: 700 } : {}; } },
+      { headerName: "Total Allocated", field: "totalAllocated", width: 115, type: "numericColumn", valueFormatter: (p) => p.value?.toLocaleString() ?? "", cellStyle: (p) => { const line = p.data as SourcingLine; return line && p.value === line.totalQty ? { color: "#10b981", fontWeight: 700 } : undefined; } },
     ];
 
     // Add column groups per visible counterparty (2-row header: group name row + child column row)
@@ -477,7 +477,7 @@ export default function SourcingPage() {
             headerClass: "cp-child-header",
             cellClass: "cp-alloc-cell",
             valueFormatter: (p) => p.value != null && p.value > 0 ? p.value.toLocaleString() : "",
-            cellStyle: (p) => p.value > 0 ? { fontWeight: 700, color: "#3b82f6" } : {},
+            cellStyle: (p) => p.value > 0 ? { fontWeight: 700, color: "#3b82f6" } : undefined,
           },
         ],
       };
@@ -726,7 +726,7 @@ export default function SourcingPage() {
   }, [visibleCPs]);
 
   // Booking grid column defs
-  const bookingColumnDefs: ColDef<BookingTrade>[] = useMemo(() => [
+  const bookingColumnDefs = useMemo(() => [
     { headerName: "", colId: "warning", width: 40, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true,
       cellRenderer: (p: { data?: BookingTrade }) => {
         if (!p.data || p.data.validationErrors.length === 0) return null;
@@ -740,7 +740,7 @@ export default function SourcingPage() {
         if (p.value === "Pending") return { color: "#f59e0b", fontWeight: 600 };
         if (p.value === "Submitted") return { color: "#3b82f6", fontWeight: 600 };
         if (p.value === "Booked") return { color: "#10b981", fontWeight: 700 };
-        return {};
+        return undefined;
       },
     },
     { headerName: "Trade Type", field: "tradeType", width: 95 },
@@ -761,7 +761,7 @@ export default function SourcingPage() {
     { headerName: "Settlement", field: "settlementDate", width: 110, editable: true },
     { headerName: "Market Value", field: "marketValue", width: 130, type: "numericColumn",
       valueFormatter: (p) => p.value != null ? `$${p.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}` : "" },
-  ], []);
+  ] as ColDef<BookingTrade>[], []);
 
   // Booking group-by config
   const bookingAutoGroupColumnDef: ColDef = useMemo(() => ({
@@ -894,8 +894,7 @@ export default function SourcingPage() {
                       <ListItemText
                         primary={cp.name}
                         secondary={cp.region}
-                        primaryTypographyProps={{ fontSize: "0.73rem" }}
-                        secondaryTypographyProps={{ fontSize: "0.63rem" }}
+                        slotProps={{ primary: { sx: { fontSize: "0.73rem" } }, secondary: { sx: { fontSize: "0.63rem" } } }}
                       />
                     </ListItemButton>
                   ))}

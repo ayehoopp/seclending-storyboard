@@ -455,7 +455,7 @@ export default function OrdersPage() {
   const isNewRow = (p: { data?: Order | null }) => p.data?.status === "New";
   const isEditableAlways = () => true;
 
-  const columnDefs = useMemo<ColDef<Order>[]>(() => [
+  const columnDefs = useMemo(() => [
     { headerName: "", colId: "delete", width: 40, cellRenderer: DeleteActionRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
     { headerName: "", colId: "submit", width: 40, cellRenderer: SubmitActionRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
     { headerName: "", colId: "warning", width: 44, cellRenderer: WarningCellRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
@@ -481,7 +481,7 @@ export default function OrdersPage() {
     { headerName: "Last Updated By", colId: "lastUpdatedBy", width: 170, valueGetter: (p) => p.data ? getLastUpdatedBy(p.data) : "" },
     { headerName: "Initiated By", colId: "initiatedBy", width: 120, valueGetter: (p) => p.data ? getInitiatedBy(p.data, current.id) : "" },
     { headerName: "Allow Counter?", field: "allowCounterOffer", colId: "allowCounter", width: 120, cellRenderer: "agCheckboxCellRenderer", cellEditor: "agCheckboxCellEditor", editable: (p) => p.data?.status === "New" || (!!p.data && p.data.counterOfferCount < MAX_COUNTER_OFFERS) },
-  ], [current.id]);
+  ] as ColDef<Order>[], [current.id]);
 
   const defaultColDef = useMemo<ColDef>(() => ({
     resizable: true,
