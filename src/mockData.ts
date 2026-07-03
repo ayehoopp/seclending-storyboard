@@ -169,6 +169,7 @@ const VIEWER_TYPE_MAP: Record<string, Record<OrderType, OrderType>> = {
 };
 export function getOrderTypeForViewer(order: Order, viewerEntityId: string): OrderType {
   const role = order.borrowerEntityId === viewerEntityId ? "borrower" : "lender";
+  if (!order.orderType) return "Borrow";
   return VIEWER_TYPE_MAP[role][order.orderType];
 }
 

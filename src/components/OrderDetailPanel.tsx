@@ -54,7 +54,7 @@ export default function OrderDetailPanel({ order, onClose }: OrderDetailPanelPro
   const activeStepIndex = workflowSteps.length - 1;
 
   return (
-    <Drawer anchor="right" open onClose={onClose} PaperProps={{ sx: { width: 500, bgcolor: "background.paper", p: 0 } }}>
+    <Drawer anchor="right" open onClose={onClose} slotProps={{ paper: { sx: { width: 500, bgcolor: "background.paper", p: 0 } } }}>
       <Box sx={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden" }}>
         {/* Header */}
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", p: 2, borderBottom: 1, borderColor: "divider" }}>
@@ -191,7 +191,7 @@ export default function OrderDetailPanel({ order, onClose }: OrderDetailPanelPro
             <DetailField label="ISIN" value={order.isin} />
             <DetailField label="Sec Lender" value={getSecLenderLabel(order, current.id)} />
             <DetailField label="Quantity" value={order.quantity.toLocaleString()} />
-            <DetailField label="Fee Rate" value={`${(order.feeRate * 100).toFixed(2)} BPS`} />
+            <DetailField label="Fee Rate" value={order.feeRate != null ? `${(order.feeRate * 100).toFixed(2)} BPS` : "—"} />
             <DetailField label="Settlement Type" value={order.settlementType} />
             <DetailField label="Settlement Location" value={order.settlementLocation} />
             <DetailField label="Price" value={`$${order.price.toFixed(2)}`} />

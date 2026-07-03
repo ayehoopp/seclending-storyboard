@@ -25,7 +25,6 @@ import { AgGridReact } from "ag-grid-react";
 import type { ColDef, GridReadyEvent } from "ag-grid-community";
 import { AllCommunityModule, ModuleRegistry, themeQuartz } from "ag-grid-community";
 import { AllEnterpriseModule } from "ag-grid-enterprise";
-import { usePerspective } from "../contexts/PerspectiveContext";
 import { useThemeMode } from "../contexts/ThemeContext";
 
 ModuleRegistry.registerModules([AllCommunityModule, AllEnterpriseModule]);
@@ -35,7 +34,6 @@ const sfpDarkTheme = themeQuartz.withParams({
   backgroundColor: "#1a2332",
   foregroundColor: "#e8eaed",
   headerBackgroundColor: "#141d28",
-  headerForegroundColor: "#9aa0a6",
   oddRowBackgroundColor: "#1e2a3a",
   rowHoverColor: "#253347",
   selectedRowBackgroundColor: "#1e3a5f",
@@ -50,7 +48,6 @@ const sfpLightTheme = themeQuartz.withParams({
   backgroundColor: "#ffffff",
   foregroundColor: "#1e293b",
   headerBackgroundColor: "#f1f5f9",
-  headerForegroundColor: "#475569",
   oddRowBackgroundColor: "#f8fafc",
   rowHoverColor: "#e2e8f0",
   selectedRowBackgroundColor: "#dbeafe",
@@ -131,7 +128,6 @@ const AVAILABLE_DATES = ["2026-06-27", "2026-06-29", "2026-06-30", "2026-07-01",
 
 /* ── Component ── */
 export default function SourcingPage() {
-  const { current } = usePerspective();
   const { mode } = useThemeMode();
   const gridRef = useRef<AgGridReact<UpcomingEvent>>(null);
   const gridTheme = mode === "dark" ? sfpDarkTheme : sfpLightTheme;
@@ -295,7 +291,7 @@ export default function SourcingPage() {
               sx={{ borderRadius: 1, py: 0.3 }}
             >
               <ListItemIcon sx={{ minWidth: 30 }}><ReceiptLongIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Above 100k" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Above 100k" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.above100}</Typography>
             </ListItemButton>
           </List>
@@ -309,22 +305,22 @@ export default function SourcingPage() {
           <List dense disablePadding>
             <ListItemButton selected={eventTypeFilter === "LongToRepay"} onClick={() => setEventTypeFilter("LongToRepay")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><ReceiptLongIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Long to Repay" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Long to Repay" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.ltr}</Typography>
             </ListItemButton>
             <ListItemButton selected={eventTypeFilter === "UpcomingShorts - FO"} onClick={() => setEventTypeFilter("UpcomingShorts - FO")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><UpcomingIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Upcoming Shorts - FO" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Upcoming Shorts - FO" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.shortsFO}</Typography>
             </ListItemButton>
             <ListItemButton selected={eventTypeFilter === "UpcomingShorts - CM"} onClick={() => setEventTypeFilter("UpcomingShorts - CM")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><UpcomingIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Upcoming Shorts - CM" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Upcoming Shorts - CM" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.shortsCM}</Typography>
             </ListItemButton>
             <ListItemButton selected={eventTypeFilter === "Proxy Voting"} onClick={() => setEventTypeFilter("Proxy Voting")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><UpcomingIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Corp Meeting Recall" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Corp Meeting Recall" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.proxy}</Typography>
             </ListItemButton>
           </List>
@@ -338,27 +334,27 @@ export default function SourcingPage() {
           <List dense disablePadding>
             <ListItemButton selected={instrumentFilter === "Equity"} onClick={() => setInstrumentFilter(instrumentFilter === "Equity" ? "" : "Equity")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><ShowChartIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Equity" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Equity" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.equity}</Typography>
             </ListItemButton>
             <ListItemButton selected={instrumentFilter === "Bond"} onClick={() => setInstrumentFilter(instrumentFilter === "Bond" ? "" : "Bond")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><AttachMoneyIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Bond" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Bond" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.bond}</Typography>
             </ListItemButton>
             <ListItemButton selected={instrumentFilter === "GDR/ADR"} onClick={() => setInstrumentFilter(instrumentFilter === "GDR/ADR" ? "" : "GDR/ADR")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><CurrencyExchangeIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="GDR / ADR" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="GDR / ADR" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.gdr}</Typography>
             </ListItemButton>
             <ListItemButton selected={instrumentFilter === "ABS"} onClick={() => setInstrumentFilter(instrumentFilter === "ABS" ? "" : "ABS")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><AccountBalanceIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="ABS" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="ABS" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.abs}</Typography>
             </ListItemButton>
             <ListItemButton selected={instrumentFilter === "Index Bond"} onClick={() => setInstrumentFilter(instrumentFilter === "Index Bond" ? "" : "Index Bond")} sx={{ borderRadius: 1, py: 0.3 }}>
               <ListItemIcon sx={{ minWidth: 30 }}><TrendingUpIcon sx={{ fontSize: 16 }} /></ListItemIcon>
-              <ListItemText primary="Index Bond" primaryTypographyProps={{ fontSize: "0.78rem" }} />
+              <ListItemText primary="Index Bond" slotProps={{ primary: { sx: { fontSize: "0.78rem" } } }} />
               <Typography sx={{ fontSize: "0.7rem", color: "text.secondary" }}>{counts.indexBond}</Typography>
             </ListItemButton>
           </List>
