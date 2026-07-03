@@ -45,7 +45,7 @@ const sfpDarkTheme = themeQuartz.withParams({
   backgroundColor: "#1a2332",
   foregroundColor: "#e8eaed",
   headerBackgroundColor: "#141d28",
-  headerForegroundColor: "#9aa0a6",
+  
   oddRowBackgroundColor: "#1e2a3a",
   rowHoverColor: "#253347",
   selectedRowBackgroundColor: "#1e3a5f",
@@ -60,7 +60,7 @@ const sfpLightTheme = themeQuartz.withParams({
   backgroundColor: "#ffffff",
   foregroundColor: "#1e293b",
   headerBackgroundColor: "#f1f5f9",
-  headerForegroundColor: "#475569",
+  
   oddRowBackgroundColor: "#f8fafc",
   rowHoverColor: "#e2e8f0",
   selectedRowBackgroundColor: "#dbeafe",
@@ -299,13 +299,7 @@ const ExpiryCellEditor = forwardRef((props: ICellEditorParams, ref) => {
 
   const confirmCustom = () => {
     if (refInput.current?.value) {
-      // Store the custom datetime as ISO so we can display it nicely
       const d = new Date(refInput.current.value);
-      const h = d.getHours(); const ampm = h >= 12 ? "PM" : "AM";
-      const hh = String(h % 12 || 12).padStart(2, "0");
-      const mm = String(d.getMinutes()).padStart(2, "0");
-      const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-      // Store as ISO but display will show formatted
       setValue(d.toISOString());
       setTimeout(() => props.stopEditing(), 0);
     }
@@ -462,10 +456,10 @@ export default function OrdersPage() {
   const isEditableAlways = () => true;
 
   const columnDefs = useMemo<ColDef<Order>[]>(() => [
-    { headerName: "", colId: "delete", width: 40, cellRenderer: DeleteActionRenderer, sortable: false, filter: false, resizable: false, suppressMenu: true, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
-    { headerName: "", colId: "submit", width: 40, cellRenderer: SubmitActionRenderer, sortable: false, filter: false, resizable: false, suppressMenu: true, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
-    { headerName: "", colId: "warning", width: 44, cellRenderer: WarningCellRenderer, sortable: false, filter: false, resizable: false, suppressMenu: true, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
-    { headerName: "", colId: "info", width: 44, cellRenderer: InfoCellRenderer, sortable: false, filter: false, resizable: false, suppressMenu: true, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
+    { headerName: "", colId: "delete", width: 40, cellRenderer: DeleteActionRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
+    { headerName: "", colId: "submit", width: 40, cellRenderer: SubmitActionRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
+    { headerName: "", colId: "warning", width: 44, cellRenderer: WarningCellRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
+    { headerName: "", colId: "info", width: 44, cellRenderer: InfoCellRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, suppressCellFocus: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden" } },
     { headerName: "Status", field: "status", width: 140, cellRenderer: StatusCellRenderer, headerTooltip: "Current status" },
     { headerName: "Type", field: "orderType", colId: "type", width: 100, editable: isNewRow, cellEditor: "agSelectCellEditor", cellEditorParams: { values: ["", ...ORDER_TYPES] }, cellRenderer: OrderTypeCellRenderer, valueGetter: (p) => p.data ? (p.data.status === "New" ? p.data.orderType : getOrderTypeForViewer(p.data, current.id)) : "", cellClassRules: { [NEW_ROW_EDITABLE_CLASS]: (p) => p.data?.status === "New", "mandatory-empty": (p) => p.data?.status === "New" && isMandatoryEmpty(p.data?.orderType) }, headerTooltip: "Transaction type" },
     { headerName: "Action Pending", colId: "pendingWith", width: 130, valueGetter: (p) => p.data ? getNextActionBy(p.data) : "", cellRenderer: PendingWithCellRenderer, headerTooltip: "The party expected to take the next action" },

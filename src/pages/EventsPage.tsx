@@ -434,7 +434,7 @@ export default function SourcingPage() {
       </Box>
 
       {/* ═══ RFQ Dialog ═══ */}
-      <Dialog open={rfqDialogOpen} onClose={() => setRfqDialogOpen(false)} maxWidth="sm" fullWidth PaperProps={{ sx: { bgcolor: "background.paper", backgroundImage: "none" } }}>
+      <Dialog open={rfqDialogOpen} onClose={() => setRfqDialogOpen(false)} maxWidth="sm" fullWidth slotProps={{ paper: { sx: { bgcolor: "background.paper", backgroundImage: "none" } } }}>
         <DialogTitle sx={{ fontSize: "1rem", fontWeight: 600, pb: 1 }}>
           Initiate RFQ Request
           <Typography variant="body2" sx={{ color: "text.secondary", fontSize: "0.8rem", mt: 0.5 }}>
