@@ -525,9 +525,6 @@ export default function OrdersPage() {
   }, [restoreGridState]);
 
   const onFirstDataRendered = useCallback(() => {
-    if (gridStateRestored.current) return; // already restored from session
-    const api = gridRef.current?.api;
-    if (api) api.autoSizeAllColumns();
     gridStateRestored.current = true;
   }, []);
 
