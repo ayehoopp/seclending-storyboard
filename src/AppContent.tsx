@@ -11,13 +11,21 @@ import { mockOrders } from './mockData';
 
 const TERMINAL_STATUSES = new Set(['Accepted', 'Expired', 'Rejected', 'Booked']);
 
+// Base path from Vite config (e.g. '/seclending-storyboard/')
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, ''); // strip trailing slash
+
 // Sync route state with browser URL (pushState-based routing)
 function usePathname() {
   const subscribe = useCallback((cb: () => void) => {
     window.addEventListener('popstate', cb);
     return () => window.removeEventListener('popstate', cb);
   }, []);
-  return useSyncExternalStore(subscribe, () => window.location.pathname);
+  // Strip the base path prefix to get the app-relative route
+  return useSyncExternalStore(subscribe, () => {
+    const full = window.location.pathname;
+    const relative = full.startsWith(BASE) ? full.slice(BASE.length) : full;
+    return relative || '/';
+  });
 }
 
 export default function AppContent() {
@@ -26,7 +34,7 @@ export default function AppContent() {
   const { current } = usePerspective();
 
   const navigate = useCallback((path: string) => {
-    window.history.pushState(null, '', path);
+    window.history.pushState(null, '', BASE + path);
     // Dispatch popstate so useSyncExternalStore re-renders
     window.dispatchEvent(new PopStateEvent('popstate'));
   }, []);
