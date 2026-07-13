@@ -38,7 +38,7 @@ const ALL_SETTLEMENT_TYPES: SettlementType[] = ["FOP", "DVP"];
 const ALL_SETTLEMENT_LOCATIONS: SettlementLocation[] = ["DTC", "CDS", "Fed"];
 
 /* ── Session storage keys for grid state persistence ── */
-const GRID_COL_STATE_KEY = "seclending-grid-col-state-v5";
+const GRID_COL_STATE_KEY = "seclending-grid-col-state-v6";
 
 const sfpDarkTheme = themeQuartz.withParams({
   backgroundColor: "#1a2332",
@@ -424,6 +424,7 @@ export default function OrdersPage() {
 
   const columnDefs = useMemo(() => [
     { headerName: "", colId: "warning", width: 40, maxWidth: 40, cellRenderer: WarningCellRenderer, sortable: false, suppressHeaderMenuButton: true, resizable: false },
+    { headerName: "", colId: "info", width: 40, maxWidth: 40, cellRenderer: InfoCellRenderer, sortable: false, suppressHeaderMenuButton: true, resizable: false },
     { headerName: "Status", field: "status", width: 140, cellRenderer: StatusCellRenderer, headerTooltip: "Current status" },
     { headerName: "Type", field: "orderType", colId: "type", width: 100, editable: isNewRow, cellEditor: "agSelectCellEditor", cellEditorParams: { values: ["", ...ORDER_TYPES] }, cellRenderer: OrderTypeCellRenderer, valueGetter: (p) => p.data ? (p.data.status === "New" ? p.data.orderType : getOrderTypeForViewer(p.data, current.id)) : "", cellClassRules: { [NEW_ROW_EDITABLE_CLASS]: (p) => p.data?.status === "New", "mandatory-empty": (p) => p.data?.status === "New" && isMandatoryEmpty(p.data?.orderType) }, headerTooltip: "Transaction type" },
     { headerName: "Action Pending", colId: "pendingWith", width: 130, valueGetter: (p) => p.data ? getNextActionBy(p.data) : "", cellRenderer: PendingWithCellRenderer, headerTooltip: "The party expected to take the next action" },
@@ -445,7 +446,6 @@ export default function OrdersPage() {
     { headerName: "Last Updated", field: "lastUpdatedUtc", width: 180, valueFormatter: (p) => { if (!p.value) return ""; const d = new Date(p.value); const yyyy = d.getFullYear(); const mo = String(d.getMonth()+1).padStart(2,"0"); const dd = String(d.getDate()).padStart(2,"0"); let h = d.getHours(); const ampm = h >= 12 ? "PM" : "AM"; h = h % 12 || 12; return yyyy+"-"+mo+"-"+dd+" "+String(h).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0")+":"+String(d.getSeconds()).padStart(2,"0")+" "+ampm; } },
     { headerName: "Last Updated By", colId: "lastUpdatedBy", width: 170, valueGetter: (p) => p.data ? getLastUpdatedBy(p.data) : "" },
     { headerName: "Initiated By", colId: "initiatedBy", width: 120, valueGetter: (p) => p.data ? getInitiatedBy(p.data, current.id) : "" },
-    { headerName: "", colId: "info", width: 40, maxWidth: 40, cellRenderer: InfoCellRenderer, sortable: false, suppressHeaderMenuButton: true, resizable: false },
   ] as ColDef<Order>[], [current.id]);
 
   const defaultColDef = useMemo<ColDef>(() => ({
