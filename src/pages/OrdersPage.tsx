@@ -11,9 +11,6 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
-import WarningAmberIcon from "@mui/icons-material/WarningAmber";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import { AgGridReact } from "ag-grid-react";
 import type { ColDef, ICellRendererParams, ICellEditorParams, GridReadyEvent, ColumnMovedEvent, SortChangedEvent, ColumnResizedEvent, CellValueChangedEvent } from "ag-grid-community";
@@ -207,52 +204,8 @@ function SettlementTypeCellRenderer(params: ICellRendererParams<Order>) {
   );
 }
 
-const WARNING_STATUSES: OrderStatus[] = ["Rejected", "Countered", "Expired"];
-
-function WarningCellRenderer(params: ICellRendererParams<Order>) {
-  if (!params.data || !WARNING_STATUSES.includes(params.data.status)) return <span />;
-  const note = params.data.notes || `Status: ${params.data.status}`;
-  return (
-    <Tooltip title={note} arrow placement="right">
-      <WarningAmberIcon sx={{ color: "#f59e0b", fontSize: 18, cursor: "pointer" }} />
-    </Tooltip>
-  );
-}
-
 const EDITABLE_CELL_CLASS = "editable-cell";
 const NEW_ROW_EDITABLE_CLASS = "new-row-editable";
-
-/** Delete icon — only shows for "New" status rows */
-function DeleteActionRenderer(params: ICellRendererParams<Order>) {
-  if (!params.data || params.data.status !== "New") return <span />;
-  return (
-    <Tooltip title="Remove this row">
-      <IconButton
-        size="small"
-        sx={{ color: "#f87171", p: 0.3 }}
-        onClick={(e) => { e.stopPropagation(); params.context?.onDeleteNewRow?.(params.data!.orderId); }}
-      >
-        <DeleteOutlineIcon sx={{ fontSize: 18 }} />
-      </IconButton>
-    </Tooltip>
-  );
-}
-
-/** Submit icon — only shows for "New" status rows */
-function SubmitActionRenderer(params: ICellRendererParams<Order>) {
-  if (!params.data || params.data.status !== "New") return <span />;
-  return (
-    <Tooltip title="Submit this order">
-      <IconButton
-        size="small"
-        sx={{ color: "#60a5fa", p: 0.3 }}
-        onClick={(e) => { e.stopPropagation(); params.context?.onSubmitNewRow?.(params.data!.orderId); }}
-      >
-        <SendIcon sx={{ fontSize: 16 }} />
-      </IconButton>
-    </Tooltip>
-  );
-}
 
 /* ── Custom Expiry Cell Editor ── */
 const EXPIRY_PRESETS = [
@@ -360,21 +313,6 @@ function isMandatoryEmpty(value: unknown): boolean {
   return false;
 }
 
-function InfoCellRenderer(params: ICellRendererParams<Order>) {
-  if (!params.data) return <span />;
-  return (
-    <Tooltip title="View order details" arrow>
-      <InfoOutlinedIcon
-        sx={{ color: "primary.main", fontSize: 18, cursor: "pointer", "&:hover": { color: "primary.light" } }}
-        onClick={(e) => {
-          e.stopPropagation();
-          params.context?.onViewDetails?.(params.data!);
-        }}
-      />
-    </Tooltip>
-  );
-}
-
 /* ── Orders Page ── */
 
 export default function OrdersPage() {
@@ -456,10 +394,6 @@ export default function OrdersPage() {
   const isEditableAlways = () => true;
 
   const columnDefs = useMemo(() => [
-    { headerName: "", colId: "delete", width: 28, maxWidth: 28, minWidth: 28, cellRenderer: DeleteActionRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", padding: 0 } },
-    { headerName: "", colId: "submit", width: 28, maxWidth: 28, minWidth: 28, cellRenderer: SubmitActionRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", padding: 0 } },
-    { headerName: "", colId: "warning", width: 28, maxWidth: 28, minWidth: 28, cellRenderer: WarningCellRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", padding: 0 } },
-    { headerName: "", colId: "info", width: 28, maxWidth: 28, minWidth: 28, cellRenderer: InfoCellRenderer, sortable: false, filter: false, resizable: false, suppressHeaderMenuButton: true, cellStyle: { display: "flex", justifyContent: "center", alignItems: "center", padding: 0 } },
     { headerName: "Status", field: "status", width: 140, cellRenderer: StatusCellRenderer, headerTooltip: "Current status" },
     { headerName: "Type", field: "orderType", colId: "type", width: 100, editable: isNewRow, cellEditor: "agSelectCellEditor", cellEditorParams: { values: ["", ...ORDER_TYPES] }, cellRenderer: OrderTypeCellRenderer, valueGetter: (p) => p.data ? (p.data.status === "New" ? p.data.orderType : getOrderTypeForViewer(p.data, current.id)) : "", cellClassRules: { [NEW_ROW_EDITABLE_CLASS]: (p) => p.data?.status === "New", "mandatory-empty": (p) => p.data?.status === "New" && isMandatoryEmpty(p.data?.orderType) }, headerTooltip: "Transaction type" },
     { headerName: "Action Pending", colId: "pendingWith", width: 130, valueGetter: (p) => p.data ? getNextActionBy(p.data) : "", cellRenderer: PendingWithCellRenderer, headerTooltip: "The party expected to take the next action" },
