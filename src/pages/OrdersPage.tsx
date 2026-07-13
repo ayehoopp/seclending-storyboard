@@ -36,7 +36,7 @@ const ALL_SETTLEMENT_TYPES: SettlementType[] = ["FOP", "DVP"];
 const ALL_SETTLEMENT_LOCATIONS: SettlementLocation[] = ["DTC", "CDS", "Fed"];
 
 /* ── Session storage keys for grid state persistence ── */
-const GRID_COL_STATE_KEY = "seclending-grid-col-state-v3";
+const GRID_COL_STATE_KEY = "seclending-grid-col-state-v4";
 
 const sfpDarkTheme = themeQuartz.withParams({
   backgroundColor: "#1a2332",
